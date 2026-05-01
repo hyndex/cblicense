@@ -89,7 +89,9 @@ Or install via Arduino IDE: **Sketch → Include Library → Add .ZIP Library** 
 
 Cost on ESP32-S3: ~10 KB flash, < 200 B RAM. Ed25519 (v0.2) will add ~32 KB flash.
 
-## Three CLI tools
+## CLI tools
+
+### C — production-ready, no external deps
 
 ```bash
 # 1. From the customer's device — print the fingerprint
@@ -111,7 +113,46 @@ $ cbl-verify --family cbcontroller \
 ok
 ```
 
-A wrong family, wrong code, or wrong device ID all return `license code does not match this device`. Codes are case-insensitive and tolerate Crockford ambiguity (I/L → 1, O → 0).
+### Python — same logic, no compile step
+
+For vendor portals / CI / scripted activation flows that don't want to
+ship a compiled binary, `tools/mint.py` and `tools/fingerprint.py`
+produce **byte-identical** output to the C tools (verified across 100
+random triples; see `tools/README.md`). Python 3.8+, stdlib only.
+
+```bash
+# Mint
+$ tools/mint.py --family cbcontroller \
+                --device-id-b32 FMHQ-SXFK-XHDG-690Z-... \
+                --salt-hex deadbeef...
+QW2YS-APBKA-JW4B2
+
+# Verify
+$ tools/mint.py verify --family cbcontroller \
+                       --device-id-b32 FMHQ-SXFK-XHDG-690Z-... \
+                       --salt-hex deadbeef... \
+                       --code QW2YS-APBKA-JW4B2
+ok
+
+# Local fingerprint (Linux host only — matches cbl_fp_linux exactly)
+$ tools/fingerprint.py --raw
+FMHQ-SXFK-XHDG-690Z-GJXA-7YMF-61DT-AHS2-A7GF-MNTN-TA4F-FCP5-CC50
+# raw sha256: 7d237cf5f3ec5b03241f84baa3fa8f305ba5472251e0fa5755d288f7b2c5630a
+```
+
+The Python module also exposes `mint_short_code`, `verify_short_code`,
+`base32_encode`, and `compute_fingerprint` for direct import from a
+Python service / Django admin / Flask portal:
+
+```python
+from cblicense.tools.mint import mint_short_code
+code = mint_short_code("cbcontroller", device_id_bytes, salt_bytes)
+```
+
+A wrong family, wrong code, or wrong device ID all return
+`license code does not match this device` from the C verifier and
+`False` from the Python verifier. Codes are case-insensitive and
+tolerate Crockford ambiguity (I/L → 1, O → 0).
 
 ## Roadmap
 
