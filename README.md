@@ -154,6 +154,31 @@ A wrong family, wrong code, or wrong device ID all return
 `False` from the Python verifier. Codes are case-insensitive and
 tolerate Crockford ambiguity (I/L → 1, O → 0).
 
+### Headscale tunnel keys — `tools/tunnel-key.py`
+
+For fleets that ship the cbcontroller image with the auto-enrolling
+[Headscale support tunnel](../cbcontroller/docs/TUNNEL_DEPLOYMENT.md),
+`tools/tunnel-key.py` is the vendor-side helper that mints, lists,
+rotates and revokes Headscale pre-auth keys. Stdlib-only; talks to
+the Headscale CLI over SSH so no API tokens live on vendor laptops.
+
+```bash
+# First-time
+$ tools/tunnel-key.py init --ssh-host 13.201.38.90 --ssh-user ec2-user
+
+# Mint a 90-day reusable tag:evse-fleet key (paste into image build)
+$ tools/tunnel-key.py mint --notes "v2.5.0-image"
+
+# List / rotate / revoke
+$ tools/tunnel-key.py list
+$ tools/tunnel-key.py rotate
+$ tools/tunnel-key.py revoke <ID>
+```
+
+State lives at `~/.cblicense/{headscale.conf, tunnel-mints.csv}`. The
+pre-auth key and the cblicense activation salt are independent — see
+the deployment guide for the full threat model.
+
 ## Roadmap
 
 | Version | Adds                                                                                       | Status   |
