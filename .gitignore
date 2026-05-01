@@ -1,0 +1,29 @@
+# Build outputs
+build/
+build-*/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
+
+# CMake artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Generated salt headers — never commit secrets
+generated/
+*.salt
+*.salt.h
+cbl_vendor_salt.h

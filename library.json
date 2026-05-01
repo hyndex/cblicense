@@ -1,0 +1,23 @@
+{
+  "name": "cblicense",
+  "version": "0.1.0",
+  "description": "Async license-key activation for embedded + Linux devices. HMAC-SHA-256 short-codes today, Ed25519 signed licenses planned for v0.2. Pure C, dependency-free, builds clean on ESP32 / Pi / generic Linux / macOS.",
+  "keywords": ["license", "activation", "drm", "hmac", "sha256", "esp32", "raspberrypi"],
+  "license": "Apache-2.0",
+  "repository": { "type": "git", "url": "https://github.com/hyndex/cblicense.git" },
+  "frameworks": ["arduino", "espidf"],
+  "platforms": ["espressif32"],
+  "headers": "cblicense/cblicense.h",
+  "build": {
+    "srcFilter": [
+      "+<src/*.c>",
+      "+<platforms/generic/*.c>",
+      "+<platforms/esp32/*.c>"
+    ],
+    "includeDir": "include",
+    "flags": ["-Wall", "-Wextra", "-Wpedantic"]
+  },
+  "examples": [
+    { "name": "esp32-license-smoke", "base": "examples/esp32-license-smoke", "files": ["esp32-license-smoke.ino"] }
+  ]
+}
