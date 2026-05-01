@@ -164,7 +164,7 @@ the Headscale CLI over SSH so no API tokens live on vendor laptops.
 
 ```bash
 # First-time
-$ tools/tunnel-key.py init --ssh-host 13.201.38.90 --ssh-user ec2-user
+$ tools/tunnel-key.py init --ssh-host 3.6.55.118 --ssh-user ec2-user
 
 # Mint a 90-day reusable tag:evse-fleet key (paste into image build)
 $ tools/tunnel-key.py mint --notes "v2.5.0-image"

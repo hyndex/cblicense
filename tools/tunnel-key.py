@@ -127,7 +127,7 @@ def _hs(cfg: dict, *args: str, json_output: bool = False) -> str:
 # ---------------------------------------------------------------------------
 def cmd_init(args: argparse.Namespace) -> int:
     cfg = {
-        "ssh_host":  args.ssh_host or input("Headscale SSH host (e.g. 13.201.38.90): ").strip(),
+        "ssh_host":  args.ssh_host or input("Headscale SSH host (e.g. 3.6.55.118): ").strip(),
         "ssh_user":  args.ssh_user or (input("SSH user [ec2-user]: ").strip() or "ec2-user"),
         "ssh_key":   args.ssh_key or (input("SSH key path (or empty for default): ").strip() or None),
         "user_id":   args.user_id or int(input("Headscale user ID [1]: ").strip() or "1"),
