@@ -1,0 +1,10 @@
+# PyInstaller build outputs (the binary itself is intentionally not in git;
+# rebuild per-platform via ./make-binary.sh on each host you want to ship to).
+dist/
+build/
+__pycache__/
+*.spec
+
+# Vendor secrets — never commit a real salt.
+vendor.salt
+*.salt
